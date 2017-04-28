@@ -1,0 +1,178 @@
+FIRST PROGRAMME
+===============
+import numpy
+from matplotlib import pyplot as plt
+
+#Q3===============================================================
+#Evenly spaced vector---------------------------
+
+n = 10
+z = numpy.pi/2
+x = numpy.arange(0,z+z/n,z/n)
+
+#Integrate cos(x)------------------------------
+
+y = numpy.cos(x)
+i = sum(y)*(z/n)
+
+print "The integral of cos(x) from 0 to 90 is "+repr(i)+" when a spacing of "+repr(n)+" is used"
+print ""
+
+#errors--------------------------------------
+exact = numpy.sin(z)
+error = abs(i - exact)
+
+print "The error is "+repr(error)
+print ""
+
+#when n = 10,  i = 1.07648280269, error = 0.076482802694102237  
+i10 = 1.07648280269
+error10 = 0.076482802694102237
+
+#when n = 30,  i = 1.02321116101, error = 0.023211161014461856 
+i30 = 1.02321116101
+error30 = 0.023211161014461856
+
+#when n = 100, i = 1.00783341987, error = 0.0078334198735821037 
+i100 = 1.00783341987
+error100 = 0.0078334198735821037
+
+#when n = 300, i = 1.00261570925, error = 0.0026157092462990583 
+i300 = 1.00261570925
+error300 = 0.0026157092462990583 
+
+#when n = 1000,i = 1.00078519255, error = 0.00078519254663067528
+i1000 = 1.00078519255
+error1000 = 0.00078519254663067528
+
+#First plot for Q6==================================================
+
+p1 = [i10,i30,i100,i300,i1000]
+p2 = [error10,error30,error100,error300,error1000]
+
+Alln = [10,30,100,300,1000]
+
+plt.plot(Alln,p2)
+plt.yscale('log')
+plt.show()
+
+plt.plot(Alln,p2)
+plt.show()
+
+#From the graph(the non-logarithmic one), the error is exponential with a negative argument.
+#from the question, alpha = -n....I think. so --> error is proportional to n**(-n)
+
+
+SECOND PROGRAMME
+================
+
+import numpy
+from matplotlib import pyplot as plt
+
+#Q4====================================================================
+n = 1000
+u = numpy.pi/2
+x = numpy.arange(0,u+(u/n),u/n)
+
+c1 = 1.0
+c2 = 1.0
+
+evens = numpy.arange(len(x)/2.0)
+odds = numpy.arange(len(x)/2.0)
+
+print "The initial vector is :"
+print x
+print ""
+
+#eliminating first and last points(saving them in xi and xf for later)
+xi = x[0]
+xf = x[-1]
+
+x[0] = 0
+x[-1] = 0
+
+print "Removing the end values :"
+print x
+print ""
+
+#selecting odds-------------------------
+for i in range((len(x)/2)):
+ odds[i] = x[c1:c1+1]
+ c1 = c1+2
+
+
+print "Selecting the odd values :" 
+print odds
+print ""
+
+#selecting evens------------------------
+for j in range(len(x)/2):
+ evens[j] = x[c2-1:c2]
+ c2 = c2+2
+
+
+print "Selecting the even values :"
+print evens
+print ""
+ 
+#Q5====================================================================
+
+dx = u/n
+
+yodds = numpy.arange(len(x)/2.0)
+yevens = numpy.arange(len(x)/2.0)
+
+for o in range(len(x)/2):
+ yodds[o] = numpy.cos(numpy.deg2rad(odds[o]))
+yodds[-1]=0
+
+for p in range(len(x)/2):
+ yevens[p] = numpy.cos(numpy.deg2rad(evens[o]))
+yevens[1]=0
+
+
+s = dx*( (1.0/6.0)*(numpy.cos(xi)+numpy.cos(xf)) + (1.0/3.0)*sum(yevens) + (2.0/3.0)*sum(yodds) )
+
+print "Simpsons rule approximates the area to be "+repr(s)+" when "+repr(n)+" intervals are used."
+print ""
+
+#errors--------------------------------------
+exact = numpy.sin(u)
+error = abs(s - exact)
+
+print "The error is "+repr(error)
+print ""
+
+#when n = 10,  s = 1.0209023084760775, error = 0.020902308476077547 
+s10 = 1.0209023084760775
+error10 = 0.020902308476077547
+
+#when n = 30,  s = 0.79350419717985321, error = 0.20649580282014679
+s30 = 0.79350419717985321
+error30 = 0.20649580282014679
+
+#when n = 100, s = 1.0444213811961096, error = 1.0444213811961096 
+s100 = 0.99457516363617615
+error100 = 0.044421381196109611
+
+#when n = 300, s = 1.0461628737566782, error = 0.046162873756678158 
+s300 = 1.0461628737566782
+error300 = 0.046162873756678158 
+
+#when n = 1000,s = 1.0467723729787892, error = 0.046772372978789223
+s1000 = 1.0467723729787892
+error1000 = 0.046772372978789223
+
+#I cannot make a comparison between simpsons rule and the Riemann sum method because my code for simpsons rule clearly doesn't work very wel :(
+
+#second half of Q6====================================================
+
+p1 = [s10,s30,s100,s300,s1000]
+p2 = [error10,error30,error100,error300,error1000]
+
+Alln = [10,30,100,300,1000]
+
+plt.plot(Alln,p2)
+plt.yscale('log')
+plt.show()
+
